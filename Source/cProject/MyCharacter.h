@@ -33,6 +33,7 @@ public:
 	void Attack();
 	void AttackCheck();
 
+	
 	void Inventory();
 
 
@@ -47,6 +48,12 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+
+	//인벤토리
+	//질문
+	//구현못한곳
+	void Inventory_Input();
+	///////
 private:
 	UPROPERTY(VisibleAnywhere);
 	class USpringArmComponent* SpringArm;
@@ -86,9 +93,20 @@ public:
 	class UWidgetComponent* HpBar;
 
 	UPROPERTY(VisibleAnywhere);
-	UStaticMeshComponent* Item;
+	class UWidgetComponent* InventoryWidget;
+
+	//UPROPERTY(VisibleAnywhere);
+	//UStaticMeshComponent* Item;
+
+
 	UPROPERTY();
 	bool IsItemColl = false;
+
+	UPROPERTY();
+	bool IsWidgetShowing = false;
+
+	//UPROPERTY();
+	//bool IsDeleteItem = false;
 
 
 	

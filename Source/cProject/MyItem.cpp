@@ -30,6 +30,11 @@ AMyItem::AMyItem()
 
 }
 
+void AMyItem::Delete()
+{
+	Destroy();
+}
+
 // Called when the game starts or when spawned
 void AMyItem::BeginPlay()
 {
@@ -52,12 +57,23 @@ void AMyItem::PostInitializeComponents()
 void AMyItem::OnComponentBeginOverlap_Trigger(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	AMyCharacter* MyCharacter = Cast<AMyCharacter>(OtherActor);
+	
 	if (MyCharacter)
 	{
 		MyCharacter->IsItemColl = true;
-	
-	}
+		/*
+		if (bCollCheck)
+		{
+			Destroy();
+			UE_LOG(LogTemp, Log, TEXT("destroy"));
+		}
+		
 
+		UE_LOG(LogTemp, Log, TEXT("test bool %d"), MyCharacter->IsDeleteItem);
+		*/
+		
+	}
+	
 	UE_LOG(LogTemp, Log, TEXT("BeginOverlapped"));
 	
 }

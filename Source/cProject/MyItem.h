@@ -15,13 +15,13 @@ public:
 	// Sets default values for this actor's properties
 	AMyItem();
 
+	void Delete();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void PostInitializeComponents() override;
 
-
-	
 
 public:
 	UFUNCTION()
@@ -36,6 +36,7 @@ public:
 	UPROPERTY(VisibleAnywhere);
 	class UBoxComponent* TriggerItem;
 
-	bool bCollCheck = false;
+	//bool bCollCheck = false;
+
 
 };

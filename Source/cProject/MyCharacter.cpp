@@ -70,6 +70,22 @@ AMyCharacter::AMyCharacter()
 		HpBar->SetWidgetClass(UW.Class);
 		HpBar->SetDrawSize(FVector2D(200.f, 50.f));
 	}
+
+	
+	InventoryWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("INVENTORYWIDGET"));
+	InventoryWidget->SetupAttachment(GetMesh());
+	InventoryWidget->SetRelativeLocation(FVector(-300.f, 0.f, 0.f));
+	InventoryWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	static ConstructorHelpers::FClassFinder<UUserWidget> UW2(TEXT("WidgetBlueprint'/Game/UI/WBP_Slot.WBP_Slot_C'"));
+	//인벤토리
+	if (UW2.Succeeded())
+	{
+		InventoryWidget->SetWidgetClass(UW2.Class);
+		InventoryWidget->SetDrawSize(FVector2D(600.f, 600.f));
+	}
+	
+
+	
 }
 
 // Called when the game starts or when spawned
@@ -113,6 +129,7 @@ void AMyCharacter::PostInitializeComponents()
 	}
 
 	HpBar->InitWidget();
+	InventoryWidget->InitWidget();
 
 	//초기화후 바인딩해주기
 	auto HpWidget = Cast<UMyCharacterWidget>(HpBar->GetUserWidgetObject());
@@ -138,10 +155,10 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AMyCharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Attack"), EInputEvent::IE_Pressed, this, &AMyCharacter::Attack);
 	
-	
-	
+	//E입력시 인벤토리에 들어감
 	PlayerInputComponent->BindAction(TEXT("ItemInventory"), EInputEvent::IE_Pressed, this, &AMyCharacter::Inventory);
-	
+	//I입력시 인벤토리가 출력됨 -해결못함
+	PlayerInputComponent->BindAction(TEXT("InventoryInput"), EInputEvent::IE_Pressed, this, &AMyCharacter::Inventory_Input);
 
 	//Axis(축) - 조이스틱
 	//Action(액션) - 버튼
@@ -223,9 +240,16 @@ void AMyCharacter::AttackCheck()
 
 void AMyCharacter::Inventory()
 {
-	if(IsItemColl)
-		UE_LOG(LogTemp, Warning, TEXT("Inventory Item Input"));
+	IsDeleteItem = true;
+	if (IsItemColl)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Inventory Item Input"));
+	
+	}
+
 }
+
+
 
 
 
@@ -262,5 +286,12 @@ float AMyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEve
 {
 	Stat->OnAttacked(DamageAmount);
 	return DamageAmount;
+}
+
+
+void AMyCharacter::Inventory_Input()
+{
+	IsWidgetShowing = true;
+	UE_LOG(LogTemp, Log, TEXT("Inventory Open"));
 }
 
