@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "MyCharacter.generated.h"
 
+
+
 UCLASS()
 class CPROJECT_API AMyCharacter : public ACharacter
 {
@@ -19,6 +21,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void PostInitializeComponents() override;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -27,6 +31,11 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void Attack();
+	void AttackCheck();
+
+	void Inventory();
+
+
 	void UpDown(float Value);
 	void LeftRight(float Value);
 	void Yaw(float Value);
@@ -35,6 +44,8 @@ public:
 	UFUNCTION()
 		//몽타주가 끝나면이 끝나고  이함수가 호출됨
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 private:
 	UPROPERTY(VisibleAnywhere);
@@ -52,6 +63,39 @@ private:
 	UPROPERTY();
 	//많이 사용할거면 이렇게 전방선언해서 맴버변수로만들기
 	class UMyAnimInstance* AnimInstance;
+
+	//UPROPERTY();
+	//class UMyItem* pItem;
+
+	UPROPERTY();
+	int32 Attackindex = 0;
+public:
+	UPROPERTY();
+	float UpDownValue = 0.f;
+
+	UPROPERTY();
+	float LeftRightValue = 0.f;
+
+	UPROPERTY(VisibleAnywhere);
+	UStaticMeshComponent* Weapon;
+
+	UPROPERTY(VisibleAnywhere);
+	class UMyStatComponent* Stat;
+
+	UPROPERTY(VisibleAnywhere);
+	class UWidgetComponent* HpBar;
+
+	UPROPERTY(VisibleAnywhere);
+	UStaticMeshComponent* Item;
+	UPROPERTY();
+	bool IsItemColl = false;
+
+
+	
+
+
+
+	
 
 
 
